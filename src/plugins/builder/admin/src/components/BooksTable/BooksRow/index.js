@@ -21,7 +21,10 @@ const BooksRow = ({ folder, book }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [error, setError] = useState("");
 
-  const isPublished = useMemo(() => book && book?.attributes?.chapters, [book]);
+  const isPublished = useMemo(
+    () => book && book?.attributes?.chapters?.data?.length,
+    [book]
+  );
 
   const publishedChapterOrders = useMemo(
     () =>
