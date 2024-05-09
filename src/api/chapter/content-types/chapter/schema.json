@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chapters",
+  "info": {
+    "singularName": "chapter",
+    "pluralName": "chapters",
+    "displayName": "Chapter",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "chapterOrder": {
+      "type": "integer",
+      "required": true,
+      "unique": true
+    },
+    "bookId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::book.book",
+      "inversedBy": "chapters"
+    },
+    "docNL": {
+      "type": "blocks"
+    },
+    "docRP": {
+      "type": "blocks"
+    },
+    "docFR": {
+      "type": "blocks"
+    },
+    "docDE": {
+      "type": "blocks"
+    },
+    "docHI": {
+      "type": "blocks"
+    },
+    "docID": {
+      "type": "blocks"
+    },
+    "docIT": {
+      "type": "blocks"
+    },
+    "docKO": {
+      "type": "blocks"
+    },
+    "docPL": {
+      "type": "blocks"
+    },
+    "docPT": {
+      "type": "blocks"
+    },
+    "docRO": {
+      "type": "blocks"
+    },
+    "docTH": {
+      "type": "blocks"
+    },
+    "docES": {
+      "type": "blocks"
+    }
+  }
+}
