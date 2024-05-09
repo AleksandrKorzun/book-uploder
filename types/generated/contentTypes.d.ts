@@ -362,6 +362,89 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiBookBook extends Schema.CollectionType {
+  collectionName: 'books';
+  info: {
+    singularName: 'book';
+    pluralName: 'books';
+    displayName: 'Book';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    book_slug: Attribute.String;
+    title: Attribute.String & Attribute.Required;
+    book_flow: Attribute.String & Attribute.Required;
+    slice: Attribute.JSON & Attribute.Required;
+    locks: Attribute.JSON & Attribute.Required;
+    intro_image: Attribute.Media & Attribute.Required;
+    cover_image: Attribute.Media & Attribute.Required;
+    salescreen_image: Attribute.Media & Attribute.Required;
+    chapters: Attribute.Relation<
+      'api::book.book',
+      'oneToMany',
+      'api::chapter.chapter'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiChapterChapter extends Schema.CollectionType {
+  collectionName: 'chapters';
+  info: {
+    singularName: 'chapter';
+    pluralName: 'chapters';
+    displayName: 'Chapter';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    chapterOrder: Attribute.Integer & Attribute.Required & Attribute.Unique;
+    bookId: Attribute.Relation<
+      'api::chapter.chapter',
+      'manyToOne',
+      'api::book.book'
+    >;
+    docNL: Attribute.Blocks;
+    docRP: Attribute.Blocks;
+    docFR: Attribute.Blocks;
+    docDE: Attribute.Blocks;
+    docHI: Attribute.Blocks;
+    docID: Attribute.Blocks;
+    docIT: Attribute.Blocks;
+    docKO: Attribute.Blocks;
+    docPL: Attribute.Blocks;
+    docPT: Attribute.Blocks;
+    docRO: Attribute.Blocks;
+    docTH: Attribute.Blocks;
+    docES: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::chapter.chapter',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::chapter.chapter',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -590,6 +673,53 @@ export interface PluginContentReleasesReleaseAction
   };
 }
 
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+          max: 50;
+        },
+        number
+      >;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUsersPermissionsPermission
   extends Schema.CollectionType {
   collectionName: 'up_permissions';
@@ -741,136 +871,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
-  info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
-    code: Attribute.String & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiBookBook extends Schema.CollectionType {
-  collectionName: 'books';
-  info: {
-    singularName: 'book';
-    pluralName: 'books';
-    displayName: 'Book';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    book_slug: Attribute.String;
-    title: Attribute.String & Attribute.Required;
-    book_flow: Attribute.String & Attribute.Required;
-    slice: Attribute.JSON & Attribute.Required;
-    locks: Attribute.JSON & Attribute.Required;
-    intro_image: Attribute.Media & Attribute.Required;
-    cover_image: Attribute.Media & Attribute.Required;
-    salescreen_image: Attribute.Media & Attribute.Required;
-    chapters: Attribute.Relation<
-      'api::book.book',
-      'oneToMany',
-      'api::chapter.chapter'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::book.book', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiChapterChapter extends Schema.CollectionType {
-  collectionName: 'chapters';
-  info: {
-    singularName: 'chapter';
-    pluralName: 'chapters';
-    displayName: 'Chapter';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    chapterOrder: Attribute.Integer & Attribute.Required & Attribute.Unique;
-    bookId: Attribute.Relation<
-      'api::chapter.chapter',
-      'manyToOne',
-      'api::book.book'
-    >;
-    docNL: Attribute.Blocks;
-    docRP: Attribute.Blocks;
-    docFR: Attribute.Blocks;
-    docDE: Attribute.Blocks;
-    docHI: Attribute.Blocks;
-    docID: Attribute.Blocks;
-    docIT: Attribute.Blocks;
-    docKO: Attribute.Blocks;
-    docPL: Attribute.Blocks;
-    docPT: Attribute.Blocks;
-    docRO: Attribute.Blocks;
-    docTH: Attribute.Blocks;
-    docES: Attribute.Blocks;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::chapter.chapter',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -881,16 +881,16 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::book.book': ApiBookBook;
+      'api::chapter.chapter': ApiChapterChapter;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
-      'api::book.book': ApiBookBook;
-      'api::chapter.chapter': ApiChapterChapter;
     }
   }
 }

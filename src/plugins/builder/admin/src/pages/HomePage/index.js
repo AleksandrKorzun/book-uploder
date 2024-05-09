@@ -1,29 +1,15 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import {
-  getAllMediaFolders,
-  getAllPublishedBooks,
-  getMediaFoldersByPath,
-} from "../../utils/getBooks";
+import { getAllMediaFolders } from "../../utils/getBooks";
 import { Box, BaseHeaderLayout, ContentLayout } from "@strapi/design-system";
 import BooksTable from "../../components/BooksTable";
 
 const HomePage = () => {
-  const [mediaFolders, setMediaFolders] = useState([]);
-  const [publishedBooks, setPublishedBooks] = useState([]);
-  const [booksPath, setBooksPath] = useState("");
+  const [allBooksFolders, setAllBooksFolders] = useState([]);
 
   useEffect(() => {
-    getAllMediaFolders()
-      .then((folder) => folder.find(({ name }) => name === "books"))
-      .then((folder) => setBooksPath(folder.path));
-    getAllPublishedBooks().then((books) => setPublishedBooks(books.data));
-    if (booksPath) {
-      getMediaFoldersByPath(booksPath).then((folders) =>
-        setMediaFolders(folders.folders)
-      );
-    }
-  }, [booksPath]);
+    getAllMediaFolders().then((folder) => setAllBooksFolders(folder));
+  }, []);
 
   return (
     <div>
@@ -31,10 +17,7 @@ const HomePage = () => {
         <BaseHeaderLayout title="Books Builder" />
       </Box>
       <ContentLayout>
-        <BooksTable
-          mediaFolders={mediaFolders}
-          publishedBooks={publishedBooks}
-        />
+        <BooksTable allBooksFolders={allBooksFolders} />
       </ContentLayout>
     </div>
   );

@@ -1,15 +1,14 @@
 import axios from "axios";
 
-// const token = process.env.TOKEN;
-
 export const getMediaFoldersByPath = async (path) => {
+  const token = JSON.parse(sessionStorage.getItem("jwtToken"));
+
   try {
     const response = await axios.get(
-      `http://localhost:1337/builder/folder?path=${path}`,
+      `${strapi.backendURL}/builder/folder?path=${path}`,
       {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEyODQwNDE4LCJleHAiOjE3MTU0MzI0MTh9.omh8SJW-9nag4ACex_0dIl3o1TcjmWTPRKVBe2pJ4T8",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -21,12 +20,11 @@ export const getMediaFoldersByPath = async (path) => {
   }
 };
 export const getAllMediaFolders = async () => {
-  // console.log("token", token);
+  const token = JSON.parse(sessionStorage.getItem("jwtToken"));
   try {
-    const response = await axios.get(`http://localhost:1337/builder/folders`, {
+    const response = await axios.get(`${strapi.backendURL}/builder/folders`, {
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzEyODQwNDE4LCJleHAiOjE3MTU0MzI0MTh9.omh8SJW-9nag4ACex_0dIl3o1TcjmWTPRKVBe2pJ4T8",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -56,13 +54,13 @@ export const getAllPublishedBooks = async () => {
 };
 
 export const getFilesFromFolder = async (path) => {
+  const token = JSON.parse(sessionStorage.getItem("jwtToken"));
   try {
     const response = await axios.get(
-      `http://localhost:1337/builder/files/${path}`,
+      `${strapi.backendURL}/builder/files/${path}`,
       {
         headers: {
-          Authorization:
-            "Bearer 1ce81a3291501836ac1778b05df8318303918443fa688ded83da48ef10a3ef284c0472d595997f859d72956fc61aaa9265088467c67d2b54e34fc4844b61d00453b5af3b8f6ed7f8f4b2da3ac14782f8dc9769cf30f6940771a0818a30e893a8e949723c7e297fbd1aced45d47c7ba48558841045b91a13676e5089e722d4408",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -75,14 +73,14 @@ export const getFilesFromFolder = async (path) => {
 };
 
 export const addNewChapter = async (body) => {
+  const token = JSON.parse(sessionStorage.getItem("jwtToken"));
   try {
     const response = await axios.post(
-      "http://localhost:1337/api/chapters",
+      `${strapi.backendURL}/api/chapters`,
       body,
       {
         headers: {
-          Authorization:
-            "Bearer 1ce81a3291501836ac1778b05df8318303918443fa688ded83da48ef10a3ef284c0472d595997f859d72956fc61aaa9265088467c67d2b54e34fc4844b61d00453b5af3b8f6ed7f8f4b2da3ac14782f8dc9769cf30f6940771a0818a30e893a8e949723c7e297fbd1aced45d47c7ba48558841045b91a13676e5089e722d4408",
+          Authorization: `Bearer ${token}`,
         },
       }
     );

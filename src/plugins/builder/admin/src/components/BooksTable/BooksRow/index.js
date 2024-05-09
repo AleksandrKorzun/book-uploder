@@ -40,7 +40,9 @@ const BooksRow = ({ folder, book }) => {
           }))
       )
     );
+
     const chaptersInBook = allChapters[0].files.length;
+
     for (let index = 0; index < chaptersInBook; index++) {
       const chapterOrder =
         Number(allChapters[0].files[index].name.split("_")[0]) + 1;
