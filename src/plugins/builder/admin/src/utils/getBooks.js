@@ -81,7 +81,7 @@ export const addNewChapter = async (body) => {
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer 36f2ae66c496112c79967521e8c18a010c6ba9b6983e1e6037ff91c2595738da0706d13340c43f563627fd4d9b719b4d4ad67aaf6893f0732da9d674e846dab076efe3319681c88c8ce5b2f2ec6c1c951da3404701ac725f241f03f367a0d5ecad0185e3b5e7d070dab65d941c948175d0c3a5393254d83555c10916a11062f2`,
         },
       }
     );

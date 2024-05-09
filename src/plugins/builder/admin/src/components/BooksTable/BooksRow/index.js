@@ -85,6 +85,7 @@ const BooksRow = ({ folder, book }) => {
       setIsVisible(true);
       setLoader(false);
     }
+    setLoader(false);
   };
 
   useEffect(() => {
