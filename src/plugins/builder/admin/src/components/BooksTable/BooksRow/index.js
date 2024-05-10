@@ -41,7 +41,9 @@ const BooksRow = ({ folder, book }) => {
   );
 
   const buildBook = async () => {
-    if (!book?.id) return;
+    if (!book?.id) {
+      setError(`Create entity for book ${folder.name} !`);
+    }
     try {
       setLoader(true);
       const allChapters = await Promise.all(
