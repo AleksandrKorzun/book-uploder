@@ -409,7 +409,7 @@ export interface ApiChapterChapter extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    chapterOrder: Attribute.Integer & Attribute.Required & Attribute.Unique;
+    chapterOrder: Attribute.Integer & Attribute.Required;
     bookId: Attribute.Relation<
       'api::chapter.chapter',
       'manyToOne',

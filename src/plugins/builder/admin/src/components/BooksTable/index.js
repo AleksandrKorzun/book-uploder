@@ -1,15 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Box,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  BaseCheckbox,
-  Tbody,
-} from "@strapi/design-system";
+import { Typography, Table, Thead, Tr, Th, Tbody } from "@strapi/design-system";
 import BooksRow from "./BooksRow";
 import {
   getAllPublishedBooks,
@@ -22,9 +13,8 @@ const BooksTable = ({ allBooksFolders }) => {
   const currentBook = (name) => {
     return publishedBooks.find((book) => book.attributes.title === name);
   };
-
+  console.log("publishedBooks", publishedBooks);
   useEffect(() => {
-    // getAllMediaFolders().then((folder) => setAllBooks(folder));
     getAllPublishedBooks().then((books) =>
       setPublishedBooks(books?.data || [])
     );

@@ -15,7 +15,7 @@
     "chapterOrder": {
       "type": "integer",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "bookId": {
       "type": "relation",

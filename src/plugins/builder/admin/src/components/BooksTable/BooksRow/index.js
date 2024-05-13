@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   BaseCheckbox,
   Button,
@@ -25,7 +26,7 @@ const BooksRow = ({ folder, book }) => {
     () => book && book?.attributes?.chapters?.data?.length,
     [book]
   );
-
+  // console.log("book", book);
   const publishedChapterOrders = useMemo(
     () =>
       book &&
@@ -43,52 +44,55 @@ const BooksRow = ({ folder, book }) => {
   const buildBook = async () => {
     if (!book?.id) {
       setError(`Create entity for book ${folder.name} !`);
-    }
-    try {
-      setLoader(true);
-      const allChapters = await Promise.all(
-        localFolders.map(
-          async (local) =>
-            await getMediaFoldersByPath(local.path).then((data) => ({
-              lang: data.name,
-              files: data.files,
-            }))
-        )
-      );
-
-      const chaptersInBook = allChapters[0].files.length;
-
-      for (let index = 0; index < chaptersInBook; index++) {
-        const chapterOrder =
-          Number(allChapters[0].files[index].name.split("_")[0]) + 1;
-
-        // if book has chapter with same chapterOrder return
-        if (publishedChapterOrders?.includes(chapterOrder)) continue;
-        const data = { bookId: book?.id, chapterOrder };
-
-        await Promise.all(
-          allChapters.map(async ({ lang, files }) => {
-            const docUrl = files.find(
-              ({ name }) => Number(name.split("_")[0]) + 1 === chapterOrder
-            )?.url;
-            const response = await fetch(docUrl);
-            const text = await response.text();
-
-            data[`doc${lang.toUpperCase()}`] = text.split("\n").map((p) => {
-              return {
-                type: "paragraph",
-                children: [{ type: "text", text: p }],
-              };
-            });
-          })
-        );
-
-        await addNewChapter({ data });
-      }
-    } catch (error) {
-      setError(error?.message);
       setIsVisible(true);
-      setLoader(false);
+      return;
+    }
+
+    setLoader(true);
+    const allChapters = await Promise.all(
+      localFolders.map(
+        async (local) =>
+          await getMediaFoldersByPath(local.path).then((data) => ({
+            lang: data.name,
+            files: data.files,
+          }))
+      )
+    );
+
+    const chaptersInBook = allChapters[0].files.length;
+
+    for (let index = 0; index < chaptersInBook; index++) {
+      const chapterOrder =
+        Number(allChapters[0].files[index].name.split("_")[0]) + 1;
+
+      console.log("chapterOrder", chapterOrder);
+      // if book has chapter with same chapterOrder return
+      if (publishedChapterOrders?.includes(chapterOrder)) continue;
+      const data = { bookId: book?.id, chapterOrder };
+
+      await Promise.all(
+        allChapters.map(async ({ lang, files }) => {
+          const docUrl = files.find(
+            ({ name }) => Number(name.split("_")[0]) + 1 === chapterOrder
+          )?.url;
+          const response = await fetch(docUrl);
+          const text = await response.text();
+
+          data[`doc${lang.toUpperCase()}`] = text.split("\n").map((p) => {
+            return {
+              type: "paragraph",
+              children: [{ type: "text", text: p }],
+            };
+          });
+        })
+      );
+      try {
+        await addNewChapter({ data });
+      } catch (error) {
+        setError(error?.message);
+        setIsVisible(true);
+        setLoader(false);
+      }
     }
     setLoader(false);
   };
@@ -157,6 +161,11 @@ const BooksRow = ({ folder, book }) => {
           </Flex>
         </DialogBody>
         <DialogFooter
+          // endAction={
+          //   <Button onClick={() => setIsVisible(false)} variant="primary">
+          //     Ok
+          //   </Button>
+          // }
           startAction={
             <Button onClick={() => setIsVisible(false)} variant="tertiary">
               Cancel
