@@ -63,7 +63,7 @@ const BooksRow = ({ folder, book }) => {
           Number(allChapters[0].files[index].name.split("_")[0]) + 1;
 
         // if book has chapter with same chapterOrder return
-        if (publishedChapterOrders.includes(chapterOrder)) continue;
+        if (publishedChapterOrders?.includes(chapterOrder)) continue;
         const data = { bookId: book?.id, chapterOrder };
 
         await Promise.all(
